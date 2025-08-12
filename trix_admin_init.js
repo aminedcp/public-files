@@ -1,7 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Pour chaque champ caché "contenu", on insère un trix-editor juste après
+    // Cherche tous les champs cachés dont le name contient "contenu"
     document.querySelectorAll('input[type=hidden][name$="contenu"]').forEach(function(hiddenInput) {
-        // Créer l'éditeur trix
+        if (hiddenInput.nextSibling && hiddenInput.nextSibling.tagName === 'TRIX-EDITOR') {
+            // déja inséré, skip
+            return;
+        }
+
+        // Crée l'élément trix-editor
         var trixEditor = document.createElement('trix-editor');
         trixEditor.setAttribute('input', hiddenInput.id);
         trixEditor.style.minHeight = "200px";
@@ -9,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         trixEditor.style.borderRadius = "4px";
         trixEditor.style.padding = "5px";
 
-        // Insérer l'éditeur après le champ caché
+        // Insère juste après le champ caché
         hiddenInput.parentNode.insertBefore(trixEditor, hiddenInput.nextSibling);
     });
 });
